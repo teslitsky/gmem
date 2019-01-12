@@ -1,0 +1,65 @@
+{
+  "name": "gmem",
+  "version": "0.0.1",
+  "description": "GMEM test task",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:js": "eslint ./src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teslitsky/gmem.git"
+  },
+  "author": "Dmitry Teslitsky <dmitryteslitsky@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/teslitsky/gmem/issues"
+  },
+  "homepage": "https://github.com/teslitsky/gmem#readme",
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ]
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint:js",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "dotenv": "6.2.0",
+    "kcors": "2.2.2",
+    "koa": "2.6.2",
+    "koa-bodyparser": "4.2.1",
+    "koa-logger": "3.2.0",
+    "koa-router": "7.4.0"
+  },
+  "devDependencies": {
+    "eslint": "5.12.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-config-prettier": "3.3.0",
+    "eslint-plugin-import": "2.14.0",
+    "husky": "1.3.1",
+    "lint-staged": "8.1.0",
+    "nodemon": "1.18.9",
+    "prettier": "1.15.3"
+  }
+}
