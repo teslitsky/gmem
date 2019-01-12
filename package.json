@@ -7,6 +7,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest",
+    "db:migrate": "knex migrate:latest",
+    "db:migrate:rollback": "knex migrate:rollback",
+    "db:seed": "knex seed:run",
     "lint:js": "eslint ./src"
   },
   "repository": {
@@ -27,7 +30,10 @@
     "extends": [
       "airbnb-base",
       "prettier"
-    ]
+    ],
+    "rules": {
+      "camelcase": 0
+    }
   },
   "prettier": {
     "trailingComma": "all",
@@ -47,10 +53,13 @@
   "dependencies": {
     "dotenv": "6.2.0",
     "kcors": "2.2.2",
+    "knex": "0.16.3",
     "koa": "2.6.2",
     "koa-bodyparser": "4.2.1",
     "koa-logger": "3.2.0",
-    "koa-router": "7.4.0"
+    "koa-router": "7.4.0",
+    "mysql2": "1.6.4",
+    "objection": "1.4.0"
   },
   "devDependencies": {
     "eslint": "5.12.0",

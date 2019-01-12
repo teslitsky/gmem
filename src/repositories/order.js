@@ -1,33 +1,28 @@
-const orders = [
-  {
-    id: 1,
-    client_id: 1,
-    location_id: 'KAZ',
-    products: [
-      {
-        id: 1,
-        title: 'foo',
-        type: 'foo',
-      },
-      {
-        id: 2,
-        title: 'bar',
-        type: 'bar',
-      },
-    ],
-  },
-];
+const { transaction } = require('objection');
+require('../db');
+const Order = require('../models/order');
 
 function getOrdersList() {
-  return [...orders];
+  return Order.query().eager('items');
 }
 
 function getOrderById(id) {
-  return orders.find(o => o.id === Number(id));
+  return Order.query()
+    .eager('items')
+    .findById(id);
 }
 
-function createOrder(order) {
-  return orders.push(order);
+function createOrder(data) {
+  const knex = Order.knex();
+
+  return transaction(knex, async trx => {
+    const order = await Order.query(trx).insert(data);
+    const items = data.items.map(id => ({ item_id: id, order_id: order.id }));
+
+    return knex('order_items')
+      .transacting(trx)
+      .insert(items);
+  });
 }
 
 module.exports = { getOrdersList, getOrderById, createOrder };

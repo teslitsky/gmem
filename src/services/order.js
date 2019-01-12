@@ -22,19 +22,6 @@ async function createOrder(order) {
     throw new Error('Empty order');
   }
 
-  const { items = [], clientId, geo } = order;
-  if (!items.length) {
-    throw new Error('Empty order items');
-  }
-
-  if (!clientId) {
-    throw new Error('No clientId param on order');
-  }
-
-  if (!geo) {
-    throw new Error('No geo param on order');
-  }
-
   return repository.createOrder(order);
 }
 
