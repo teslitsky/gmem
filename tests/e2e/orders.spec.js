@@ -25,7 +25,7 @@ describe('Orders endpoints', () => {
   it('Create order', async () => {
     const response = await request(app)
       .post('/orders')
-      .send({ products: [1, 2], geo: 'KAZ' });
+      .send({ items: [1, 2], clientId: 1, geo: 'KAZ' });
     expect(response.statusCode).toBe(201);
   });
 

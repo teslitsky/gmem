@@ -4,6 +4,7 @@ const cors = require('kcors');
 const logger = require('koa-logger');
 const bodyParser = require('koa-bodyparser');
 const Router = require('koa-router');
+const ordersRouter = require('./routers/orders');
 const errors = require('./middlewares/errors');
 
 const app = new Koa();
@@ -20,6 +21,8 @@ const router = new Router();
 router.get('/_health', ctx => {
   ctx.body = 'OK';
 });
+
+router.use('/orders', ordersRouter.routes(), ordersRouter.allowedMethods());
 
 app.use(router.routes());
 app.use(router.allowedMethods());
