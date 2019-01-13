@@ -1,0 +1,16 @@
+dist: xenial
+
+language: node_js
+node_js:
+  - "10"
+  - "11"
+
+cache: npm
+
+services:
+  - mysql
+
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS genesis;'
+
+script: npm test
