@@ -1,9 +1,11 @@
 const request = require('supertest');
 const app = require('../../src/app');
 const knex = require('../../src/db');
-const { deliveryToken } = require('../tokens');
+const deliveryService = require('../../src/services/delivery');
+const { deliveryToken, deliveryRefreshToken } = require('../tokens');
 
 const bearer = `Bearer ${deliveryToken}`;
+const DELIVERY_TOKEN_ID = 3;
 
 describe('Delivery endpoints', () => {
   beforeEach(async () => {
@@ -101,5 +103,66 @@ describe('Delivery endpoints', () => {
     expect(response.statusCode).toEqual(201);
     expect(response.body.access_token).toBeDefined();
     expect(response.body.refresh_token).toBeDefined();
+  });
+
+  it('Refresh token with valid tokens', async () => {
+    const response = await request(app)
+      .post('/deliveries/token/refresh')
+      .send({
+        access_token: deliveryToken,
+        refresh_token: deliveryRefreshToken,
+      });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body.type).toEqual('Bearer');
+    expect(response.body.access_token).toBeDefined();
+    expect(response.body.refresh_token).toBeDefined();
+    expect(response.body.refresh_token.length).toEqual(16);
+
+    // test token signed for delivery with id 3
+    const delivery = await deliveryService.findById(DELIVERY_TOKEN_ID);
+    expect(delivery.refresh_token !== deliveryRefreshToken).toEqual(true);
+    expect(delivery.refresh_token.length).toEqual(16);
+  });
+
+  it('Get code 403 without tokens', async () => {
+    const response = await request(app)
+      .post('/deliveries/token/refresh')
+      .send({});
+    expect(response.statusCode).toEqual(403);
+    expect(response.body.access_token).toBeUndefined();
+    expect(response.body.refresh_token).toBeUndefined();
+
+    const delivery = await deliveryService.findById(DELIVERY_TOKEN_ID);
+    expect(delivery.refresh_token === deliveryRefreshToken).toEqual(true);
+  });
+
+  it('Get code 403 with invalid access_token', async () => {
+    const response = await request(app)
+      .post('/deliveries/token/refresh')
+      .send({
+        access_token: 'invalid',
+        refresh_token: 'invalid',
+      });
+    expect(response.statusCode).toEqual(403);
+    expect(response.body.access_token).toBeUndefined();
+    expect(response.body.refresh_token).toBeUndefined();
+
+    const delivery = await deliveryService.findById(DELIVERY_TOKEN_ID);
+    expect(delivery.refresh_token === deliveryRefreshToken).toEqual(true);
+  });
+
+  it('Get code 403 with invalid refresh_token', async () => {
+    const response = await request(app)
+      .post('/deliveries/token/refresh')
+      .send({
+        access_token: deliveryToken,
+        refresh_token: 'invalid',
+      });
+    expect(response.statusCode).toEqual(403);
+    expect(response.body.access_token).toBeUndefined();
+    expect(response.body.refresh_token).toBeUndefined();
+
+    const delivery = await deliveryService.findById(DELIVERY_TOKEN_ID);
+    expect(delivery.refresh_token === deliveryRefreshToken).toEqual(true);
   });
 });

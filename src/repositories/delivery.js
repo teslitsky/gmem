@@ -23,8 +23,7 @@ function createDelivery(data) {
 
 function setRefreshToken(id, token) {
   return Delivery.query()
-    .query()
-    .path({ refresh_token: token })
+    .patch({ refresh_token: token })
     .where('id', '=', id);
 }
 
