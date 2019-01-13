@@ -7,6 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest -i",
+    "test:coverage": "jest -i --coverage",
     "db:migrate": "knex migrate:latest",
     "db:migrate:rollback": "knex migrate:rollback",
     "db:seed": "knex seed:run",
@@ -51,15 +52,23 @@
     ]
   },
   "dependencies": {
+    "bcryptjs": "2.4.3",
     "dotenv": "6.2.0",
+    "jsonwebtoken": "8.4.0",
     "kcors": "2.2.2",
     "knex": "0.16.3",
     "koa": "2.6.2",
     "koa-bodyparser": "4.2.1",
+    "koa-jwt": "3.5.1",
     "koa-logger": "3.2.0",
+    "koa-passport": "4.1.1",
     "koa-router": "7.4.0",
     "mysql2": "1.6.4",
-    "objection": "1.4.0"
+    "objection": "1.4.0",
+    "objection-password": "2.0.0",
+    "objection-visibility": "0.4.0",
+    "passport-local": "1.0.0",
+    "rand-token": "0.4.0"
   },
   "devDependencies": {
     "eslint": "5.12.0",

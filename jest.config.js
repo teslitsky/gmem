@@ -16,5 +16,7 @@ module.exports = {
     '!seeds/**',
     '!tests/**/**',
     '!coverage/**',
+    '!jest.config.js',
+    '!wallaby.js',
   ],
 };

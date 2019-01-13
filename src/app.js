@@ -5,6 +5,7 @@ const logger = require('koa-logger');
 const bodyParser = require('koa-bodyparser');
 const Router = require('koa-router');
 const ordersRouter = require('./routers/orders');
+const deliveriesRouter = require('./routers/deliveries');
 const errors = require('./middlewares/errors');
 
 const app = new Koa();
@@ -23,6 +24,11 @@ router.get('/_health', ctx => {
 });
 
 router.use('/orders', ordersRouter.routes(), ordersRouter.allowedMethods());
+router.use(
+  '/deliveries',
+  deliveriesRouter.routes(),
+  deliveriesRouter.allowedMethods(),
+);
 
 app.use(router.routes());
 app.use(router.allowedMethods());
