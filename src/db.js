@@ -1,7 +1,8 @@
-const knex = require('knex');
+const Knex = require('knex');
 const { Model } = require('objection');
 const config = require('../knexfile');
 
-const db = knex(config);
+const knex = Knex(config);
+Model.knex(knex);
 
-module.exports = Model.knex(db);
+module.exports = knex;

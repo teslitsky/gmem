@@ -1,11 +1,21 @@
 const request = require('supertest');
 const app = require('../../src/app');
+const knex = require('../../src/db');
 
 describe('Items endpoints', () => {
-  afterEach(() => {
+  beforeEach(async () => {
+    await knex.migrate.latest();
+    await knex.seed.run();
+  });
+
+  afterEach(async () => {
+    await knex.migrate.rollback();
     app.close();
   });
 
+  afterAll(async () => {
+    await knex.destroy();
+  });
   it('Get items list', async () => {
     const response = await request(app).get('/items');
     expect(response.statusCode).toBe(200);
