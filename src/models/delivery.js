@@ -7,6 +7,10 @@ class Delivery extends Model {
     return 'deliveries';
   }
 
+  static get hidden() {
+    return ['password', 'refresh_token'];
+  }
+
   static get jsonSchema() {
     return {
       type: 'object',

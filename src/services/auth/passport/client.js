@@ -1,30 +1,28 @@
 const passport = require('koa-passport');
 const { Strategy } = require('passport-local');
-const Delivery = require('../../delivery');
+const Client = require('../../client');
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
 
 passport.use(
-  'delivery',
+  'client',
   new Strategy(
     {
       usernameField: 'login',
       passwordField: 'password',
-      passReqToCallback: true,
       session: false,
     },
-    async (req, login, password, done) => {
+    async (login, password, done) => {
       try {
-        const account = await Delivery.findByLogin(login);
+        const account = await Client.findByLogin(login);
         if (!account) {
-          const delivery = await Delivery.createDelivery({
+          const client = await Client.createClient({
             login,
             password,
-            title: req.body.title,
           });
 
-          return done(null, delivery);
+          return done(null, client);
         }
 
         const isValidPassword = await account.verifyPassword(password);

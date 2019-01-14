@@ -6,6 +6,7 @@ const bodyParser = require('koa-bodyparser');
 const Router = require('koa-router');
 const ordersRouter = require('./routers/orders');
 const deliveriesRouter = require('./routers/deliveries');
+const clientsRouter = require('./routers/clients');
 const itemsRouter = require('./routers/items');
 const errors = require('./middlewares/errors');
 
@@ -24,13 +25,14 @@ router.get('/_health', ctx => {
   ctx.body = 'OK';
 });
 
-router.use('/orders', ordersRouter.routes(), ordersRouter.allowedMethods());
 router.use(
   '/deliveries',
   deliveriesRouter.routes(),
   deliveriesRouter.allowedMethods(),
 );
+router.use('/clients', clientsRouter.routes(), clientsRouter.allowedMethods());
 router.use('/items', itemsRouter.routes(), itemsRouter.allowedMethods());
+router.use('/orders', ordersRouter.routes(), ordersRouter.allowedMethods());
 
 app.use(router.routes());
 app.use(router.allowedMethods());

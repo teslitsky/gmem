@@ -9,7 +9,7 @@ const router = new Router();
 router.use(passport.initialize());
 
 // @TODO: Maybe abstract and move to /auth endpoint
-router.post('/signup', passport.authenticate('local'), ctx => {
+router.post('/signup', passport.authenticate('delivery'), ctx => {
   ctx.status = 201;
   ctx.body = jwt.signTokens(ctx.state.user, 'delivery');
 });

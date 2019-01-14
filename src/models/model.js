@@ -13,10 +13,6 @@ class ModelWithHashedPassword extends Password(BaseModel) {}
 
 class ModelWithoutHiddenFields extends VisibilityPlugin(
   ModelWithHashedPassword,
-) {
-  static get hidden() {
-    return ['password', 'refresh_token'];
-  }
-}
+) {}
 
 module.exports = ModelWithoutHiddenFields;
