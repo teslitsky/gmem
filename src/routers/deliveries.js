@@ -53,6 +53,15 @@ router.get('/:id', async ctx => {
   }
 });
 
+router.post('/:id/locations', async ctx => {
+  try {
+    await delivery.updateLocations(ctx.params.id, ctx.request.body);
+    ctx.status = 201;
+  } catch (err) {
+    ctx.throw(400, err);
+  }
+});
+
 router.post('/items', ctx => {
   ctx.status = 201;
   ctx.body = 'updated items';

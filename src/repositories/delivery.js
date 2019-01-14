@@ -1,13 +1,14 @@
+const { transaction } = require('objection');
 require('../db');
 const Delivery = require('../models/delivery');
 
 function getDeliveriesList() {
-  return Delivery.query().eager(['locations']);
+  return Delivery.query().eager('[locations]');
 }
 
 function getDeliveryById(id) {
   return Delivery.query()
-    .eager(['locations'])
+    .eager('[locations]')
     .findById(id);
 }
 
@@ -27,10 +28,28 @@ function setRefreshToken(id, token) {
     .where('id', '=', id);
 }
 
+function updateLocations(id, locations) {
+  const knex = Delivery.knex();
+
+  return transaction(knex, async trx => {
+    await knex('delivery_locations')
+      .transacting(trx)
+      .where({ delivery_id: id })
+      .del();
+
+    const items = locations.map(l => ({ delivery_id: id, location_id: l }));
+
+    return knex('delivery_locations')
+      .transacting(trx)
+      .insert(items);
+  });
+}
+
 module.exports = {
   getDeliveriesList,
   getDeliveryById,
   getDeliveryByLogin,
   createDelivery,
   setRefreshToken,
+  updateLocations,
 };

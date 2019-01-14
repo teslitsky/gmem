@@ -20,10 +20,23 @@ function getDeliveriesList() {
   return repository.getDeliveriesList();
 }
 
+function updateLocations(id, locations = []) {
+  if (!id) {
+    throw new Error('Delivery id is required');
+  }
+
+  if (!locations.length) {
+    throw new Error('Delivery locations id is required');
+  }
+
+  return repository.updateLocations(id, locations);
+}
+
 module.exports = {
   findById,
   findByLogin,
   createDelivery,
   setRefreshToken,
   getDeliveriesList,
+  updateLocations,
 };

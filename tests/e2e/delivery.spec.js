@@ -61,12 +61,31 @@ describe('Delivery endpoints', () => {
     expect(response.statusCode).toEqual(201);
   });
 
-  it('Update geo locations', async () => {
+  it('Update delivery geo locations', async () => {
+    const id = 1;
+    const locationIds = [1, 2];
     const response = await request(app)
-      .post('/deliveries/1/items')
+      .post(`/deliveries/${id}/locations`)
       .set('Authorization', bearer)
-      .send(['foo', 'bar']);
+      .send(locationIds);
     expect(response.statusCode).toEqual(201);
+
+    const { locations } = await deliveryService.findById(id);
+    expect(locations).toBeInstanceOf(Array);
+    expect(locations.length).toEqual(2);
+
+    const savedLocations = locations.filter(l => locationIds.includes(l.id));
+    expect(savedLocations.length).toEqual(2);
+  });
+
+  it('Do not update empty locations', async () => {
+    const id = 1;
+    const locationIds = [];
+    const response = await request(app)
+      .post(`/deliveries/${id}/locations`)
+      .set('Authorization', bearer)
+      .send(locationIds);
+    expect(response.statusCode).toEqual(400);
   });
 
   it('Create new delivery at signup', async () => {
