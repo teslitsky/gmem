@@ -1,5 +1,7 @@
 const Model = require('./model');
 const Item = require('./item');
+const Delivery = require('./delivery');
+const Client = require('./client');
 
 class Order extends Model {
   static get tableName() {
@@ -31,6 +33,22 @@ class Order extends Model {
             to: 'order_items.item_id',
           },
           to: 'items.id',
+        },
+      },
+      delivery: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Delivery,
+        join: {
+          from: 'orders.delivery_id',
+          to: 'deliveries.id',
+        },
+      },
+      client: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Client,
+        join: {
+          from: 'orders.client_id',
+          to: 'clients.id',
         },
       },
     };

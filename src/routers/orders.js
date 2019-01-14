@@ -1,7 +1,10 @@
 const Router = require('koa-router');
 const order = require('../services/order');
+const guard = require('../guards/jwt');
 
 const router = new Router();
+
+router.use(guard());
 
 router.get('/', async ctx => {
   try {
@@ -21,7 +24,10 @@ router.get('/:id', async ctx => {
 
 router.post('/', async ctx => {
   try {
-    await order.createOrder(ctx.request.body);
+    await order.createOrder({
+      data: ctx.request.body,
+      clientId: ctx.state.user.id,
+    });
     ctx.status = 201;
   } catch (err) {
     ctx.throw(400, err);

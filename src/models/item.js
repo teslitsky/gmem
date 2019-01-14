@@ -17,6 +17,25 @@ class Item extends Model {
       },
     };
   }
+
+  static get relationMappings() {
+    return {
+      deliveries: {
+        relation: Model.ManyToManyRelation,
+        // require loop recommended solution
+        // http://vincit.github.io/objection.js/#relations
+        modelClass: `${__dirname}/delivery`,
+        join: {
+          from: 'items.type',
+          through: {
+            from: 'delivery_item_types.type',
+            to: 'delivery_item_types.delivery_id',
+          },
+          to: 'deliveries.id',
+        },
+      },
+    };
+  }
 }
 
 module.exports = Item;
