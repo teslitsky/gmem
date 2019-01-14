@@ -1,5 +1,6 @@
 const Model = require('./model');
 const Location = require('./location');
+const Item = require('./item');
 
 class Delivery extends Model {
   static get tableName() {
@@ -35,7 +36,18 @@ class Delivery extends Model {
         },
       },
 
-      // @TODO: add product types relation
+      items: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Item,
+        join: {
+          from: 'deliveries.id',
+          through: {
+            from: 'delivery_item_types.delivery_id',
+            to: 'delivery_item_types.type',
+          },
+          to: 'items.type',
+        },
+      },
     };
   }
 }

@@ -45,6 +45,33 @@ function updateLocations(id, locations) {
   });
 }
 
+function updateItemTypes(id, types) {
+  const knex = Delivery.knex();
+
+  return transaction(knex, async trx => {
+    await knex('delivery_item_types')
+      .transacting(trx)
+      .where({ delivery_id: id })
+      .del();
+
+    const items = types.map(type => ({ delivery_id: id, type }));
+
+    return knex('delivery_item_types')
+      .transacting(trx)
+      .insert(items);
+  });
+}
+
+function getAvailableItemTypes(id) {
+  const knex = Delivery.knex();
+
+  return knex('delivery_item_types')
+    .distinct('type')
+    .pluck('type')
+    .select()
+    .where({ delivery_id: id });
+}
+
 module.exports = {
   getDeliveriesList,
   getDeliveryById,
@@ -52,4 +79,6 @@ module.exports = {
   createDelivery,
   setRefreshToken,
   updateLocations,
+  updateItemTypes,
+  getAvailableItemTypes,
 };

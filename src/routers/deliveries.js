@@ -62,14 +62,13 @@ router.post('/:id/locations', async ctx => {
   }
 });
 
-router.post('/items', ctx => {
-  ctx.status = 201;
-  ctx.body = 'updated items';
-});
-
-router.post('/geo', ctx => {
-  ctx.status = 201;
-  ctx.body = 'updated geo';
+router.post('/:id/items', async ctx => {
+  try {
+    await delivery.updateItemTypes(ctx.params.id, ctx.request.body);
+    ctx.status = 201;
+  } catch (err) {
+    ctx.throw(400, err);
+  }
 });
 
 module.exports = router;

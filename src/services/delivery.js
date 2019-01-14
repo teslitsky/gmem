@@ -32,6 +32,22 @@ function updateLocations(id, locations = []) {
   return repository.updateLocations(id, locations);
 }
 
+function updateItemTypes(id, types = []) {
+  if (!id) {
+    throw new Error('Delivery id is required');
+  }
+
+  if (!types.length) {
+    throw new Error('Delivery items types required');
+  }
+
+  return repository.updateItemTypes(id, types);
+}
+
+function getAvailableItemTypes(id) {
+  return repository.getAvailableItemTypes(id);
+}
+
 module.exports = {
   findById,
   findByLogin,
@@ -39,4 +55,6 @@ module.exports = {
   setRefreshToken,
   getDeliveriesList,
   updateLocations,
+  updateItemTypes,
+  getAvailableItemTypes,
 };

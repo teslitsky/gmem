@@ -54,11 +54,17 @@ describe('Delivery endpoints', () => {
   });
 
   it('Update product types list', async () => {
+    const id = 1;
+    const deliveryTypes = ['clothes', 'electronics'];
+
     const response = await request(app)
-      .post('/deliveries/1/items')
+      .post(`/deliveries/${id}/items`)
       .set('Authorization', bearer)
-      .send(['foo', 'bar']);
+      .send(deliveryTypes);
     expect(response.statusCode).toEqual(201);
+
+    const types = await deliveryService.getAvailableItemTypes(id);
+    expect(types).toEqual(deliveryTypes);
   });
 
   it('Update delivery geo locations', async () => {
