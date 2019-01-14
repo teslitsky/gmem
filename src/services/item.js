@@ -1,7 +1,11 @@
 const repository = require('../repositories/item');
 
-function getItemsList() {
-  return repository.getItemsList();
+function getItemsList(geo) {
+  if (!geo) {
+    return repository.getItemsList();
+  }
+
+  return repository.getItemsListByGeo(geo);
 }
 
 async function getItemById(id) {

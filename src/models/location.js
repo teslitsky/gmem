@@ -17,6 +17,25 @@ class Location extends Model {
       },
     };
   }
+
+  static get relationMappings() {
+    return {
+      deliveries: {
+        relation: Model.ManyToManyRelation,
+        // require loop recommended solution
+        // http://vincit.github.io/objection.js/#relations
+        modelClass: `${__dirname}/delivery`,
+        join: {
+          from: 'locations.id',
+          through: {
+            from: 'delivery_locations.location_id',
+            to: 'delivery_locations.delivery_id',
+          },
+          to: 'deliveries.id',
+        },
+      },
+    };
+  }
 }
 
 module.exports = Location;

@@ -7,7 +7,7 @@ const router = new Router();
 router.use(guard('client'));
 
 router.get('/', async ctx => {
-  ctx.body = await item.getItemsList();
+  ctx.body = await item.getItemsList(ctx.query.geo);
 });
 
 router.get('/:id', async ctx => {

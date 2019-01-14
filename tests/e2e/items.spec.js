@@ -38,6 +38,24 @@ describe('Items endpoints', () => {
     expect(response.body.title).toEqual('T-shirt');
   });
 
+  it('Get available items list by location', async () => {
+    const geo = 'UKR';
+    const response = await request(app)
+      .get(`/items/?geo=${geo}`)
+      .set('Authorization', bearer);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.deliveries.length).toEqual(2);
+    expect(response.body.deliveries[0].items.length).toEqual(4);
+  });
+
+  it('Get no items with invalid geo', async () => {
+    const geo = 'invalid';
+    const response = await request(app)
+      .get(`/items/?geo=${geo}`)
+      .set('Authorization', bearer);
+    expect(response.statusCode).toEqual(204);
+  });
+
   it('Return 404 for not existed item', async () => {
     const response = await request(app)
       .get('/items/0')
