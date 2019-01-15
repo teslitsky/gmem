@@ -10,7 +10,7 @@
 Install dependencies:
 
 ```sh
-$ npm run install
+$ npm install
 ```
 
 Set Environment variables
