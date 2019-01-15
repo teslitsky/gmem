@@ -13,4 +13,4 @@ services:
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS genesis;'
 
-script: npm test
+script: npm test:coverage
